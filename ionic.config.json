@@ -1,0 +1,7 @@
+{
+  "name": "voting-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
