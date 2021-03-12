@@ -47,7 +47,7 @@ const App = () => (
               </IonButtons>
           </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent >
         <IonRouterOutlet id="main">
           <Route path="/home" component={Home} exact={true} />
           <Route path="/account" component={Account} exact={true} />
