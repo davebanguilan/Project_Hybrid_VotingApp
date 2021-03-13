@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonRadioGroup, IonRadio, IonLabel, IonButton, IonItem, IonIcon, IonSpinner} from '@ionic/react';
-import { pin, trash, checkmarkOutline } from 'ionicons/icons';
+import { createOutline, trash, checkmarkOutline } from 'ionicons/icons';
 
 import './index.css';
 
@@ -21,8 +21,21 @@ const VoteCard = ({vote, handleSubmit, setPostData, loading}) => {
         setPostData({...vote, count: newArray.join(";")});
     }
 
+
+    const editForm = () => {};
+    const deleteForm = () => {};
+
     return (
         <IonCard>
+            <IonItem lines="none">
+                <IonButton slot="end" size="small" color="secondary" onClick={editForm}>
+                    <IonIcon icon={createOutline} />
+                </IonButton>
+                <IonButton slot="end" size="small" color="danger" onClick={deleteForm}>
+                    <IonIcon icon={trash} />
+                </IonButton>
+            </IonItem>
+
             <IonCardHeader>
                 <IonCardTitle>{vote.question}</IonCardTitle>
             </IonCardHeader>
