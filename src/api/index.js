@@ -7,3 +7,5 @@ const API = axios.create({
 export const fetchVotes = () => API.get('/votes');
 
 export const createVote = (newVote) => API.post('/votes', newVote);
+
+export const editVote = (editedVote) => API.put('/votes', editedVote);

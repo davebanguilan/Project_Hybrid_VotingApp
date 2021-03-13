@@ -1,5 +1,5 @@
 import * as api from '../api';
-import { FETCH_ALL, CREATE, SET_VOTES, DELETE } from '../constants/actionTypes'
+import { UPDATE, CREATE, SET_VOTES, DELETE } from '../constants/actionTypes'
 
 
 export const getVotes = () => async (dispatch) => {
@@ -24,3 +24,13 @@ export const setVote = (newVote) => async(dispatch) => {
         console.log(error);
       }
 }
+
+export const updateVote = (editedVote) => async (dispatch) => {
+    try {
+      const { data } = await api.editVote(editedVote);
+  
+      dispatch({ type: UPDATE, payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };

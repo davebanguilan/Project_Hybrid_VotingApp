@@ -1,31 +1,24 @@
-import React, { useState } from 'react';
-import { IonCard, IonCardHeader, IonCardTitle, IonRadioGroup, IonRadio, IonLabel, IonButton, IonItem, IonIcon} from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonCard, IonCardHeader, IonCardTitle, IonRadioGroup, IonRadio, IonLabel, IonButton, IonItem, IonIcon, IonSpinner} from '@ionic/react';
 import { pin, trash, checkmarkOutline } from 'ionicons/icons';
 
 import './index.css';
 
-const VoteCard = ({vote}) => {
-
-    const [postData, setPostData] = useState({
-        question: "",
-        choice: "",
-        count: ""
-    })
+const VoteCard = ({vote, handleSubmit, setPostData, loading}) => {
     const [selected, setSelected] = useState("");
 
-
-    const increaseCount = (index, array) => {
-        var newArray = array;
-        var c = array[index] + 1;
-        newArray.splice(index, 1, c);
-        return newArray.join(";");
-
-    }
+    useEffect(() => {
+        choiceSelected();
+    }, [selected]);
+    
 
     const choiceSelected = () => {
         var increaseCountIndex = vote.choice.split(";").indexOf(selected);
         var countArray = vote.count.split(";").map(Number);
-        console.log(increaseCount(increaseCountIndex, countArray));
+        var newArray = countArray;
+        var c = countArray[increaseCountIndex] + 1;
+        newArray.splice(increaseCountIndex, 1, c);
+        setPostData({...vote, count: newArray.join(";")});
     }
 
     return (
@@ -34,7 +27,7 @@ const VoteCard = ({vote}) => {
                 <IonCardTitle>{vote.question}</IonCardTitle>
             </IonCardHeader>
 
-            <IonRadioGroup value={selected} onIonChange={e => setSelected(e.detail.value)}>
+            <IonRadioGroup value={selected} onIonChange={e => {setSelected(e.detail.value)}}>
                 {vote.choice.split(";").map((choices, index) => (
                     <IonItem key={index}>
                         <IonLabel>{choices}</IonLabel>
@@ -44,10 +37,14 @@ const VoteCard = ({vote}) => {
             </IonRadioGroup>
 
             <IonItem lines="none" className="cc-button">
-                <IonButton slot="end" size="medium" onClick={choiceSelected}>
-                    <IonIcon icon={checkmarkOutline} slot="start" />
-                    <IonLabel>Vote</IonLabel>
-                </IonButton>
+                {loading ? (
+                    <IonSpinner name="crescent" slot="end"/>
+                ): (
+                    <IonButton slot="end" size="medium" onClick={handleSubmit}>
+                        <IonIcon icon={checkmarkOutline} slot="start" />
+                        <IonLabel>Vote</IonLabel>
+                    </IonButton>
+                ) }
             </IonItem>
         </IonCard>
     )
