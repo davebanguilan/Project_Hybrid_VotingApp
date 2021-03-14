@@ -34,27 +34,6 @@ const Navbar = () => {
                             <IonIcon icon={informationCircle} slot="start" />
                             </IonItem>
                         </IonMenuToggle>
-
-                        {/* <IonMenuToggle auto-hide="false">
-                            <IonItem button routerLink={"/create"} routerDirection="none">
-                            <IonLabel>Create</IonLabel>
-                            <IonIcon icon={addCircle} slot="start" />
-                            </IonItem>
-                        </IonMenuToggle>
-
-                        <IonMenuToggle auto-hide="false">
-                            <IonItem button routerLink={"/vote"} routerDirection="none">
-                            <IonLabel>Vote</IonLabel>
-                            <IonIcon icon={checkmarkCircle} slot="start" />
-                            </IonItem>
-                        </IonMenuToggle>
-
-                        <IonMenuToggle auto-hide="false">
-                            <IonItem button routerLink={"/myform"} routerDirection="none">
-                            <IonLabel>Form</IonLabel>
-                            <IonIcon icon={newspaper} slot="start" />
-                            </IonItem>
-                        </IonMenuToggle> */}
                         
                         <IonItem lines="none">
                             <IonIcon slot="start" icon={moon} />
