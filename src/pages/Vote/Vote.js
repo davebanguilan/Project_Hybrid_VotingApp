@@ -14,12 +14,13 @@ const Vote = () => {
         count: ""
     });
     const [loading, setLoading] = useState(false);
+    const [edit, setEdit] = useState(false);
     const dispatch = useDispatch();
     const votes = useSelector((state) => state.votes);
 
     useEffect(() => {
         dispatch(getVotes());
-    }, []);
+    }, [edit]);
 
 
     const handleSubmit = async () => {
@@ -39,7 +40,7 @@ const Vote = () => {
             </IonHeader> */}
             <IonContent >
                 {votes.map((vote) => (
-                    <VoteCard key={vote.id} vote={vote} handleSubmit={handleSubmit} loading={loading} setPostData={setPostData}/>
+                    <VoteCard key={vote.id} vote={vote} handleSubmit={handleSubmit} loading={loading} setPostData={setPostData} setEdit={setEdit}/>
                 ))}
             </IonContent>
         </IonPage>

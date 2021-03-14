@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { IonCard, IonCardHeader, IonCardTitle, IonRadioGroup, IonRadio, IonLabel, IonButton, IonItem, IonIcon, IonSpinner} from '@ionic/react';
+import { IonCard, IonCardHeader, IonCardTitle, IonRadioGroup, IonRadio, IonLabel, IonButton, IonItem, IonIcon, IonSpinner, IonModal, IonInput, IonToast } from '@ionic/react';
 import { createOutline, trash, checkmarkOutline } from 'ionicons/icons';
-
+import { useDispatch } from 'react-redux'; 
+import {updateVote} from '../../actions/votes';
 import './index.css';
 
-const VoteCard = ({vote, handleSubmit, setPostData, loading}) => {
+const VoteCard = ({vote, handleSubmit, setPostData, loading, setEdit}) => {
+    const dispatch = useDispatch();
     const [selected, setSelected] = useState("");
+    const [showToast, setShowToast] = useState(false);
+    const [choices, setChoices] =  useState(vote.choice.split(";"));
+    const [editData, setEditData] = useState({
+        id: vote.id,
+        question: vote.question,
+        choice: vote.choice,
+        count: vote.count
+    })
+
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         choiceSelected();
     }, [selected]);
-    
 
     const choiceSelected = () => {
         var increaseCountIndex = vote.choice.split(";").indexOf(selected);
@@ -21,11 +32,46 @@ const VoteCard = ({vote, handleSubmit, setPostData, loading}) => {
         setPostData({...vote, count: newArray.join(";")});
     }
 
-
-    const editForm = () => {};
+    const editForm = () => {
+        setShowModal(true);
+    };
     const deleteForm = () => {};
 
+    
+
+    const handleInputChange = (e, index) => {
+        const { value } = e.target;
+        const list = [...choices];
+        list[index] = value;
+        setChoices(list);
+
+        var choiceString = list.join(";");
+
+        setEditData({
+            ...editData,
+            choice: choiceString,
+        });
+         
+    };
+
+    const submitEditForm = async () => {
+        setEdit(false);
+        await dispatch(updateVote(editData));
+        setEdit(true);
+        setShowToast(true);
+        setShowModal(false);
+    };
+
     return (
+        <>
+        <IonToast
+                isOpen={showToast}
+                onDidDismiss={() => setShowToast(false)}
+                message="Form Edited Succesfully"
+                duration={1500}
+                color="success"
+                position="bottom"
+            />
         <IonCard>
             <IonItem lines="none">
                 <IonButton slot="end" size="small" color="secondary" onClick={editForm}>
@@ -41,10 +87,10 @@ const VoteCard = ({vote, handleSubmit, setPostData, loading}) => {
             </IonCardHeader>
 
             <IonRadioGroup value={selected} onIonChange={e => {setSelected(e.detail.value)}}>
-                {vote.choice.split(";").map((choices, index) => (
+                {vote.choice.split(";").map((ch, index) => (
                     <IonItem key={index}>
-                        <IonLabel>{choices}</IonLabel>
-                        <IonRadio slot="start" value={choices} />
+                        <IonLabel>{ch}</IonLabel>
+                        <IonRadio slot="start" value={ch} />
                     </IonItem>
                 ))}
             </IonRadioGroup>
@@ -60,6 +106,26 @@ const VoteCard = ({vote, handleSubmit, setPostData, loading}) => {
                 ) }
             </IonItem>
         </IonCard>
+        <IonModal isOpen={showModal} swipeToClose={true} onDidDismiss={() => setShowModal(false)}>
+            <IonCard>
+            <IonItem >
+                        <IonLabel position="fixed">Question:</IonLabel>
+                        <IonInput name="question" value={editData.question} onIonChange={e => setEditData({ ...editData, question: e.target.value })} />
+                    </IonItem>
+                    {choices.map((x, index) => (
+                        <IonItem key={index}>
+                            <IonLabel position="fixed">Choices:</IonLabel>
+                            <IonInput name="choice" value={x} placeholder="Enter a choice" onIonChange={e => handleInputChange(e, index)} />
+                        </IonItem>
+                    ))}
+
+                <IonItem>
+                    <IonButton slot="end" size="default" color="primary" onClick={submitEditForm}>Save</IonButton>
+                </IonItem>
+            </IonCard>
+                <IonButton color="danger" onClick={() => setShowModal(false)}>Cancel</IonButton>
+        </IonModal>
+        </>
     )
 }
 
