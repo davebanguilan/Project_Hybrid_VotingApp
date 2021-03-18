@@ -68,7 +68,7 @@ const CreateCard = ({handleSubmit, postData, setPostData, choices, setChoices, s
             </IonItem>
             {choices.map((x, i) => (
                 <>
-                <IonItem>
+                <IonItem key={i}>
                     <IonLabel position="fixed">Choice:</IonLabel>
                     <IonInput name="choice" placeholder="Enter a choice" value={x} onIonChange={e => handleInputChange(e, i)} />
                     {choices.length !== 1 && (
