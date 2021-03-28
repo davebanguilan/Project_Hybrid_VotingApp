@@ -8,15 +8,20 @@ import './index.css';
 const CreateVote = () => {
     const dispatch = useDispatch();
     const [choices, setChoices] = useState([""]);
+    
     const [showToast, setShowToast] = useState(false);
     const [postData, setPostData] = useState({
         question: "",
         choice: "",
-        count: ""
-      });
+        count: "",
+        creator: "",
+        voter: ""
+    });
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        console.log(postData);
         dispatch(setVote({ ...postData }));
         reset();
         setChoices([""]);

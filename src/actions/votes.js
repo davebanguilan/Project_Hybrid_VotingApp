@@ -27,10 +27,22 @@ export const setVote = (newVote) => async(dispatch) => {
 
 export const updateVote = (editedVote) => async (dispatch) => {
     try {
+      console.log(editedVote);
       const { data } = await api.editVote(editedVote);
-  
+      
       dispatch({ type: UPDATE, payload: data });
     } catch (error) {
       console.log(error);
     }
   };
+
+export const deleteVote = (delVote) => async (dispatch) => {
+  try {
+    
+    await api.deleteVote(delVote);
+    
+    dispatch({ type: DELETE, payload: delVote });
+  } catch (error) {
+    console.log(error);
+  }
+};

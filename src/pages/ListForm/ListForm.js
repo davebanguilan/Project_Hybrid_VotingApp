@@ -19,10 +19,7 @@ const ListForm = () => {
 
     return (
         <IonPage className="cv-container">
-            {/* <IonHeader>
-                <IonToolbar> <IonTitle></IonTitle> </IonToolbar>
-            </IonHeader> */}
-            <IonContent >
+            <IonContent>
             <IonItem lines="none">
                     <IonIcon slot="start" icon={pieChartOutline} />
                     <IonLabel>Pie Chart</IonLabel>

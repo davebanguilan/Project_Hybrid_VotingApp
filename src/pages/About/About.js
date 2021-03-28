@@ -1,10 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { IonCard, IonCardHeader, IonCardTitle, IonContent, IonLabel, IonButton, IonItem, IonIcon, IonCardContent, IonModal, IonInput, IonToast, IonPage } from '@ionic/react';
+
 
 const About = () => {
+
     return (
-        <div>
-            <p>About pages</p>
-        </div>
+        <IonPage>
+            <IonContent>
+            <IonCard>
+                <IonCardHeader>
+                    <IonCardTitle>About Us</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                        This is a voting mobile app created by:
+                        Dave Emilson S. Banguilan, John Elli Cabuhat, Ernesto Paquibol, and Christian Joseph Samilin.
+                </IonCardContent>
+                
+            </IonCard>
+            
+            </IonContent>
+        </IonPage>
     )
 }
 

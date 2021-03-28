@@ -1,8 +1,5 @@
 import { FETCH_ALL, CREATE, SET_VOTES, DELETE } from '../constants/actionTypes'
 
-const initialState = {
-    votes: [],
-}
 
 // eslint-disable-next-line
 export default (votes = [], action) => {
@@ -17,8 +14,8 @@ export default (votes = [], action) => {
         case CREATE:
             return [...votes, action.payload];
 
-        // case DELETE:
-        //     return votes.filter((bug) => bug._id !== action.payload);
+        case DELETE:
+            return votes.filter((vote) => vote.id !== action.payload.id);
 
         // case UPDATE:
         //     return votes.map((bug) => bug._id === action.payload._id ? action.payload : bug);

@@ -5,8 +5,7 @@ import { addCircle, trash, checkmarkOutline } from 'ionicons/icons';
 import './index.css';
 
 const CreateCard = ({handleSubmit, postData, setPostData, choices, setChoices, showToast, setShowToast}) => {
-    
-
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const handleInputChange = (e, index) => {
         const { value } = e.target;
         const list = [...choices];
@@ -25,11 +24,16 @@ const CreateCard = ({handleSubmit, postData, setPostData, choices, setChoices, s
             }
         }
 
-        setPostData({
-            ...postData,
-            choice: choiceString,
-            count: stringC
-        });
+        
+        if(user !== null){
+            setPostData({
+                ...postData,
+                choice: choiceString,
+                count: stringC,
+                creator: user.email,
+                voter: ""
+            });
+        }
          
     };
 
@@ -63,7 +67,6 @@ const CreateCard = ({handleSubmit, postData, setPostData, choices, setChoices, s
             
             <IonItem >
                 <IonLabel position="floating">Question</IonLabel>
-                {/* <IonInput name="questionInput" value={question} onIonChange={e => handleInputChange(e)} /> */}
                 <IonInput name="questionInput" value={postData.question} onIonChange={e => setPostData({ ...postData, question: e.target.value })} />
             </IonItem>
             {choices.map((x, i) => (
@@ -79,7 +82,7 @@ const CreateCard = ({handleSubmit, postData, setPostData, choices, setChoices, s
                 </IonItem>
 
                 {choices.length - 1 === i && (
-                    <IonItem lines="none" className="cc-button">
+                    <IonItem key={x} lines="none" className="cc-button">
                         <IonButton slot="end" size="medium" onClick={handleAddChoice}>
                             <IonIcon icon={addCircle} slot="start" />
                             <IonLabel>Add Choices</IonLabel>

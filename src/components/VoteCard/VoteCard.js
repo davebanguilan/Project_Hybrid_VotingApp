@@ -2,20 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonRadioGroup, IonRadio, IonLabel, IonButton, IonItem, IonIcon, IonSpinner, IonModal, IonInput, IonToast } from '@ionic/react';
 import { createOutline, trash, checkmarkOutline } from 'ionicons/icons';
 import { useDispatch } from 'react-redux'; 
-import {updateVote} from '../../actions/votes';
+import {updateVote, deleteVote} from '../../actions/votes';
 import './index.css';
 
-const VoteCard = ({vote, handleSubmit, setPostData, loading, setEdit}) => {
+const VoteCard = ({vote, handleSubmit, postData, setPostData, loading, setEdit}) => {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState("");
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const [showToast, setShowToast] = useState(false);
     const [choices, setChoices] =  useState(vote.choice.split(";"));
     const [editData, setEditData] = useState({
         id: vote.id,
         question: vote.question,
         choice: vote.choice,
-        count: vote.count
+        count: vote.count,
+        creator: user.email,
+        voter: ""
     })
+    
 
     const [showModal, setShowModal] = useState(false);
 
@@ -24,18 +28,30 @@ const VoteCard = ({vote, handleSubmit, setPostData, loading, setEdit}) => {
     }, [selected]);
 
     const choiceSelected = () => {
+        if(vote.voter === "" || vote.voter === null) { 
+            var userVoter = [];
+            userVoter.push(user.email);
+        } else {
+            userVoter = postData.voter.split(';');
+            userVoter.push(user.email); 
+        }
+        
+
         var increaseCountIndex = vote.choice.split(";").indexOf(selected);
         var countArray = vote.count.split(";").map(Number);
         var newArray = countArray;
         var c = countArray[increaseCountIndex] + 1;
         newArray.splice(increaseCountIndex, 1, c);
-        setPostData({...vote, count: newArray.join(";")});
+
+        setPostData({...vote, count: newArray.join(";"), voter: userVoter.join(';')});
     }
 
     const editForm = () => {
         setShowModal(true);
     };
-    const deleteForm = () => {};
+    const deleteForm = async () => {
+        await dispatch(deleteVote(vote));
+    };
 
     
 
@@ -73,14 +89,16 @@ const VoteCard = ({vote, handleSubmit, setPostData, loading, setEdit}) => {
                 position="bottom"
             />
         <IonCard>
-            <IonItem lines="none">
+            {user.email === vote.creator && (
+                <IonItem lines="none">
                 <IonButton slot="end" size="small" color="secondary" onClick={editForm}>
                     <IonIcon icon={createOutline} />
                 </IonButton>
                 <IonButton slot="end" size="small" color="danger" onClick={deleteForm}>
                     <IonIcon icon={trash} />
                 </IonButton>
-            </IonItem>
+                </IonItem>
+            )}
 
             <IonCardHeader>
                 <IonCardTitle>{vote.question}</IonCardTitle>

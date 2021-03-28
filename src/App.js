@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -30,15 +30,22 @@ import About from './pages/About/About';
 import CreateVote from './pages/CreateVote/CreateVote';
 import Vote from './pages/Vote/Vote';
 import ListForm from './pages/ListForm/ListForm';
-
+import SignUp from './pages/SignUp/SignUp';
+import SignIn from './pages/SignIn/SignIn';
+import { useDispatch } from "react-redux";
 import Navbar from './components/Navbar/Navbar';
 import Tabs from './components/Tabs/Tabs';
 
 
-const App = () => (
-  <IonApp>
+const App = () => {
+  
+  const [isAuth, setIsAuth] = useState(false);
+
+
+  return (
+    <IonApp>
     <IonReactRouter>
-      <Navbar />
+      <Navbar isAuth={isAuth} setIsAuth={setIsAuth}/>
       <IonHeader>
           <IonToolbar>
               <IonTitle>Voting App</IonTitle>
@@ -47,20 +54,33 @@ const App = () => (
               </IonButtons>
           </IonToolbar>
       </IonHeader>
+      
       <IonContent >
         <IonRouterOutlet id="main">
           <Route path="/home" component={Home} exact={true} />
           <Route path="/account" component={Account} exact={true} />
           <Route path="/about" component={About} exact={true} />
+          <Route path="/signup" component={SignUp} exact={true} />
+          <Route exact path="/" render={() => <Redirect to="/create" />} />
+        </IonRouterOutlet>
+        <IonRouterOutlet>
           <Route path="/create" component={CreateVote} exact={true} />
           <Route path="/vote" component={Vote} exact={true} />
           <Route path="/myform" component={ListForm} exact={true} />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
         </IonRouterOutlet>
+        <IonRouterOutlet>
+          <Route path="/signup" render={()=> <SignUp setIsAuth={setIsAuth} />} exact={true} />
+          <Route path="/signin" render={()=> <SignIn setIsAuth={setIsAuth} />} exact={true} />
+      </IonRouterOutlet>
       </IonContent>
-      <Tabs />
+      {
+        isAuth && <Tabs />
+      }
+      
+      
     </IonReactRouter>
   </IonApp>
-);
+  )
+};
 
 export default App;

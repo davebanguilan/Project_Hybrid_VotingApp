@@ -11,9 +11,9 @@ const Tabs = () => {
     return (
             <IonTabs>
                 <IonRouterOutlet>
-                <Route path="/create" component={CreateVote} exact={true} />
-                <Route path="/vote" component={Vote} exact={true} />
-                <Route path="/myform" component={ListForm} exact={true} />
+                    <Route path="/create" component={CreateVote} exact={true} />
+                    <Route path="/vote" component={Vote} exact={true} />
+                    <Route path="/myform" component={ListForm} exact={true} />
                 </IonRouterOutlet>
                 <IonTabBar slot="bottom">
 
