@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: "https://localhost:44351/",
+    baseURL: "https://votingappbackend.azurewebsites.net/",
 });
 
 API.interceptors.request.use((req) => {
